@@ -24,7 +24,7 @@ steps:
 
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
-  args: [ '-c', 'set -x; curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $_GITHUB_TOKEN" https://api.github.com/repos/fernandorubbo/costimator-github-cloudbuild/issues/$_PR_NUMBER/comments -d "$(cat /data/out.json)"; if grep -q "8593;" /data/out.json; then    curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $_GITHUB_TOKEN" https://api.github.com/repos/fernandorubbo/costimator-github-cloudbuild/pulls/$_PR_NUMBER/requested_reviewers -d "{\"reviewers\":[\"fbrubbo\"]}"; fi ' ]
+  args: [ '-c', 'set -x; curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $_GITHUB_TOKEN" https://api.github.com/repos/fernandorubbo/costimator-github-cloudbuild/issues/$_PR_NUMBER/comments -d "$(cat /data/out.json)"; if grep -q "8593;" /data/out.json; then    curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $_GITHUB_TOKEN" https://api.github.com/repos/fernandorubbo/costimator-github-cloudbuild/pulls/$_PR_NUMBER/requested_reviewers -d "{\"reviewers\":[\"$_GITHUB_COST_REVIEWER\"]}"; fi ' ]
   volumes:
   - name: 'data'
     path: /data
