@@ -10,14 +10,14 @@ steps:
 
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
-  args: [ '-c', 'gsutil cp gs://GS_BUCKET_NAME/SA_KEY /data' ]
+  args: [ '-c', 'gsutil cp gs://BUCKET/KEY /data' ]
   volumes:
   - name: 'data'
     path: /data
 
 - name: us-central1-docker.pkg.dev/$PROJECT_ID/docker-repo/costimator:v0.0.1 
   entrypoint: 'bash'
-  args: [ '-c', 'set -x; costimator --pkg-prev /data/wordpress --pkg /workspace/wordpress --gcp-authkey-file /data/SA_KEY --output /data/out.json' ]
+  args: [ '-c', 'set -x; costimator --pkg-prev /data/wordpress --pkg /workspace/wordpress --gcp-authkey-file /data/KEY --output /data/out.json' ]
   volumes:
   - name: 'data'
     path: /data
