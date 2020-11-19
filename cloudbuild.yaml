@@ -1,0 +1,30 @@
+
+steps:
+
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args: [ '-c', 'set -x && git config --global user.email "fernandorubbo@google.com" && git config --global user.name "fernandorubbo" && git clone https://github.com/fernandorubbo/costimator-github-cloudbuild.git /data && cd /data && git checkout $_BASE_BRANCH' ]
+  volumes:
+  - name: 'data'
+    path: /data
+
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', 'gsutil cp gs://rubbo-costimator/rubbo-costimator-1-7c2c159e6951.json /data' ]
+  volumes:
+  - name: 'data'
+    path: /data
+
+- name: us-central1-docker.pkg.dev/$PROJECT_ID/docker-repo/costimator:v0.0.1 
+  entrypoint: 'bash'
+  args: [ '-c', 'set -x; costimator --pkg-prev /data/wordpress --pkg /workspace/wordpress --gcp-authkey-file /data/rubbo-costimator-1-7c2c159e6951.json --output /data/out.json' ]
+  volumes:
+  - name: 'data'
+    path: /data
+
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', 'set -x; curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $_GITHUB_TOKEN" https://api.github.com/repos/fernandorubbo/costimator-github-cloudbuild/issues/$_PR_NUMBER/comments -d "$(cat /data/out.json)"; if grep -q "8593;" /data/out.json; then    curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $_GITHUB_TOKEN" https://api.github.com/repos/fernandorubbo/costimator-github-cloudbuild/pulls/$_PR_NUMBER/requested_reviewers -d "{\"reviewers\":[\"fbrubbo\"]}"; fi ' ]
+  volumes:
+  - name: 'data'
+    path: /data
