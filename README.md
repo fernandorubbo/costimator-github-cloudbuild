@@ -49,6 +49,8 @@ echo https://github.com/$GITHUB_USER/$GITHUB_REPO.git
 1. git checkout -b b1
 1. update your code
 1. git add -A . && git commit -m "change" && git push origin b1
-1. git 
+1. in your github open a pull request
+    your cloud build trigger should run
+1. 
 
 
