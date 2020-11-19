@@ -46,9 +46,17 @@ echo https://github.com/$GITHUB_USER/$GITHUB_REPO.git
     https://pantheon.corp.google.com/cloud-build/triggers
 1. Add variable
     _GITHUB_TOKEN = YOUR $GITHUB_TOKEN above
+    _GITHUB_COST_REVIEWER = YOUR $GITHUB_COST_REVIEWER above
 1. git checkout -b b1
 1. update your code
 1. git add -A . && git commit -m "change" && git push origin b1
-1. git 
+1. in your github repo, open a pull request
+    your cloud build trigger should run
+1. in your githube repo, settings -> branches -> add Branch protection rules -> main -> Require status checks to pass before merging -> select your trigger
+1. now, increase your replicas
+1. in your github repo, open a pull request
+    your cloud build trigger is now required to pass
+    you must see your $GITHUB_COST_REVIEWER as a reviewer once we increased the cost
+
 
 
