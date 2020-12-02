@@ -8,7 +8,7 @@ metadata:
     value: 'wow'
     cost-estimator.kpt.io/monthly-cost: '44.03'
 spec:
-  replicas: 4
+  replicas: 5
   selector:
     matchLabels:
       app: wordpress
